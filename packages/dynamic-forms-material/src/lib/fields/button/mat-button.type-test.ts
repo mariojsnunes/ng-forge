@@ -65,6 +65,9 @@ describe('MatSubmitButtonField - Exhaustive Whitelist', () => {
     | 'excludeValueIfHidden'
     | 'excludeValueIfDisabled'
     | 'excludeValueIfReadonly'
+    | 'wrappers'
+    | 'skipAutoWrappers'
+    | 'skipDefaultWrappers'
     | 'logic';
 
   type ActualKeys = keyof MatSubmitButtonField;
@@ -119,6 +122,9 @@ describe('MatNextButtonField - Exhaustive Whitelist', () => {
     | 'excludeValueIfHidden'
     | 'excludeValueIfDisabled'
     | 'excludeValueIfReadonly'
+    | 'wrappers'
+    | 'skipAutoWrappers'
+    | 'skipDefaultWrappers'
     | 'logic';
 
   type ActualKeys = keyof MatNextButtonField;
@@ -169,6 +175,9 @@ describe('MatPreviousButtonField - Exhaustive Whitelist', () => {
     | 'excludeValueIfHidden'
     | 'excludeValueIfDisabled'
     | 'excludeValueIfReadonly'
+    | 'wrappers'
+    | 'skipAutoWrappers'
+    | 'skipDefaultWrappers'
     | 'logic';
 
   type ActualKeys = keyof MatPreviousButtonField;
@@ -219,6 +228,9 @@ describe('AddArrayItemButtonField - Exhaustive Whitelist', () => {
     | 'excludeValueIfHidden'
     | 'excludeValueIfDisabled'
     | 'excludeValueIfReadonly'
+    | 'wrappers'
+    | 'skipAutoWrappers'
+    | 'skipDefaultWrappers'
     | 'logic'
     | 'arrayKey'
     | 'template';
@@ -275,6 +287,9 @@ describe('RemoveArrayItemButtonField - Exhaustive Whitelist', () => {
     | 'excludeValueIfHidden'
     | 'excludeValueIfDisabled'
     | 'excludeValueIfReadonly'
+    | 'wrappers'
+    | 'skipAutoWrappers'
+    | 'skipDefaultWrappers'
     | 'logic'
     | 'arrayKey';
 
