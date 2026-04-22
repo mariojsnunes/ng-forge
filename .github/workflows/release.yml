@@ -416,15 +416,24 @@ jobs:
         if: inputs.mode == 'dry-run'
         run: pnpm nx release publish --access public --dry-run
 
+      - name: Upgrade npm for Trusted Publisher support
+        # Node 22 ships with npm 10.9, which talks to the npm registry but does NOT
+        # correctly drive the OIDC Trusted Publisher flow on publish (confirmed by
+        # repeated 404s from 10.9.7 against a known-good TP registration). npm ≥ 11.5
+        # is what actually works. We pin (not @latest) because self-upgrading to a
+        # moving target has been observed to corrupt npm's own node_modules mid-install
+        # (MODULE_NOT_FOUND for @npmcli/arborist deps).
+        if: |
+          github.event_name == 'schedule' ||
+          (github.event_name == 'workflow_dispatch' && (inputs.mode == 'publish' || inputs.mode == 'next'))
+        run: npm install -g npm@11.5.1
+
       - name: Publish to npm
         # Real publish: workflow_dispatch mode=publish, workflow_dispatch mode=next, or schedule.
         # Runs BEFORE git tag + GitHub release on the stable path (and @next tag below) so
         # that the irreversible-first-so-reversible-second pattern holds: if npm fails, no
         # stale tag/release is left behind. On re-run after a partial failure, the
         # per-package `npm view` check below skips packages already on npm so we don't 409.
-        # Node 22 ships with npm ≥ 10.9, which natively supports OIDC Trusted Publisher
-        # + provenance — no pre-publish `npm install -g npm@latest` self-upgrade needed
-        # (that step is also flaky because npm can corrupt its own node_modules mid-upgrade).
         if: |
           github.event_name == 'schedule' ||
           (github.event_name == 'workflow_dispatch' && (inputs.mode == 'publish' || inputs.mode == 'next'))
@@ -437,7 +446,7 @@ jobs:
               echo "@ng-forge/${pkg}@${VERSION} already published — skipping"
               continue
             fi
-            npm publish "dist/packages/$pkg" --access public --provenance --tag "$DIST_TAG" --loglevel=verbose
+            npm publish "dist/packages/$pkg" --access public --provenance --tag "$DIST_TAG"
           done
 
       - name: Configure Git
